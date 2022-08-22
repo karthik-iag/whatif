@@ -1,0 +1,42 @@
+{
+  "name": "dig-platform-multienv-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:deploy.yml": "yarn run build:dist && npx cdk synth --lookups false",
+    "build:dist": "npx ts-node bin/build.ts",
+    "build": "tsc",
+    "build-app": "parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/$NODE_ENV",
+    "synth-no-lookups": "npx cdk synth --lookups false",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "@cosmos/cdk-compliance": "^0.6.9",
+    "@cosmos/cdk-patterns": "^0.6.9",
+    "@types/aws-lambda": "^8.10.100",
+    "@types/node": "^10.17.27",
+    "aws-cdk": "^2.20.0",
+    "aws-cdk-lib": "2.20.0",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1159.0",
+    "constructs": "^10.0.46",
+    "got": "^12.1.0",
+    "hpagent": "^1.0.0",
+    "ky": "^0.30.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "autoprefixer": "^10.4.7",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.5.0",
+    "path-browserify": "^1.0.1",
+    "postcss": "^8.4.14",
+    "process": "^0.11.10",
+    "tailwindcss": "^3.1.4"
+  }
+}

@@ -1,0 +1,48 @@
+name: initialise
+on:  
+  push
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NODE_ENV: "prod"
+jobs:
+  initialise-new-repo:
+    #don't run workflow on the template
+    if: github.event.repository.name != 'dig-platform-multienv-template'
+    runs-on: [ self-hosted ]
+    steps:
+      - name: Set up git cli
+        #yum -y install says yes when it prompts "Is this ok" during install
+        run: |
+          sudo yum -y install git
+          git config --global user.name "Github Action Bot"
+          git config --global user.email "action@github.com"
+      # checkout current repo (new repo from template)
+      - name: Checkout repo
+        uses: actions/checkout@v2  
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Update repo name
+        run: |
+          sed -i 's/REPLACE-ME/${{env.REPO_NAME}}/' cdk.context.json
+          sed -i 's/REPLACE-ME/${{env.REPO_NAME}}/' lib/app-config.ts
+      - name: Commit and push changes
+        run: |
+          git add -A
+          git commit -m "initialise cdk.context.json"
+          git push --no-verify origin ${{ github.head_ref }}
+      - name: Add role to Oidc repo
+        uses: iag-digital-platform/actions-workflow-trigger@v0.3.5
+        with:
+          app-id: ${{ secrets.WORKFLOW_TRIGGER_APPID }}
+          private-key: ${{ secrets.WORKFLOW_TRIGGER_PRIVATE_KEY }}
+          installation-id: ${{ secrets.WORKFLOW_TRIGGER_INSTALLATIONID }}
+          repo: dig-platform-oidc-roles
+          workflow-id: add-role.yml
+          inputs: "{\"currentRepo\":\"${{github.event.repository.name}}\"}"
+      - name: Delete workflow on repos from template
+        run: |
+          git rm .github/workflows/initialise-repo.yml
+          git commit -m "delete workflow file"
+          git push --no-verify origin ${{ github.head_ref }}

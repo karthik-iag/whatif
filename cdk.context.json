@@ -1,0 +1,3 @@
+{
+  "@cdk-cosmos:githubActionRole": "arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole"
+}

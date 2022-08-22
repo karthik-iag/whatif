@@ -1,0 +1,32 @@
+node_modules
+*.log
+.DS_Store
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# IDEs
+.vscode
+
+# built typscript
+*.js
+*.d.ts
+!jest.config.js
+!dist
+
+# Don't ignore lambda code
+!lambda/**/*.js
+
+# parcel
+.parcel-cache
+
+
+# tailwind
+!tailwind.config.js
+!postcss.config.js
+
+# custom types
+!src/multienv-app/types.d.ts
+
+/.idea/**
