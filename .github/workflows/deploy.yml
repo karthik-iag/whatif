@@ -1,0 +1,1126 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+jobs:
+  Build-Build:
+    name: Synthesize
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    needs: []
+    env: {}
+    container: null
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Snyk analysis
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_API_TOKEN }}
+        with:
+          command: monitor
+        continue-on-error: true
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Build
+        run: >-
+          yarn
+
+          NODE_ENV="dev" npx parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/dev
+
+          NODE_ENV="tst" npx parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/tst
+
+          NODE_ENV="stub" npx parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/stub
+
+          NODE_ENV="sit" npx parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/sit
+
+          NODE_ENV="perf" npx parcel build src/multienv-app/index.html --public-url ./ --dist-dir dist/perf
+
+          npx cdk synth
+      - name: Upload cdk.out
+        uses: actions/upload-artifact@v2.1.1
+        with:
+          name: cdk.out
+          path: cdk.out
+  Assets-FileAsset1:
+    name: Publish Assets Assets-FileAsset1
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset1
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset1-step.sh
+  Assets-FileAsset10:
+    name: Publish Assets Assets-FileAsset10
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset10
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset10-step.sh
+  Assets-FileAsset11:
+    name: Publish Assets Assets-FileAsset11
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset11
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset11-step.sh
+  Assets-FileAsset12:
+    name: Publish Assets Assets-FileAsset12
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset12
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset12-step.sh
+  Assets-FileAsset13:
+    name: Publish Assets Assets-FileAsset13
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset13
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset13-step.sh
+  Assets-FileAsset14:
+    name: Publish Assets Assets-FileAsset14
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset14
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset14-step.sh
+  Assets-FileAsset15:
+    name: Publish Assets Assets-FileAsset15
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset15
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset15-step.sh
+  Assets-FileAsset16:
+    name: Publish Assets Assets-FileAsset16
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset16
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset16-step.sh
+  Assets-FileAsset17:
+    name: Publish Assets Assets-FileAsset17
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset17
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset17-step.sh
+  Assets-FileAsset18:
+    name: Publish Assets Assets-FileAsset18
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset18
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset18-step.sh
+  Assets-FileAsset19:
+    name: Publish Assets Assets-FileAsset19
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset19
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset19-step.sh
+  Assets-FileAsset2:
+    name: Publish Assets Assets-FileAsset2
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset2
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset2-step.sh
+  Assets-FileAsset20:
+    name: Publish Assets Assets-FileAsset20
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset20
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset20-step.sh
+  Assets-FileAsset21:
+    name: Publish Assets Assets-FileAsset21
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset21
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset21-step.sh
+  Assets-FileAsset3:
+    name: Publish Assets Assets-FileAsset3
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset3
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset3-step.sh
+  Assets-FileAsset4:
+    name: Publish Assets Assets-FileAsset4
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset4
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset4-step.sh
+  Assets-FileAsset5:
+    name: Publish Assets Assets-FileAsset5
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset5
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset5-step.sh
+  Assets-FileAsset6:
+    name: Publish Assets Assets-FileAsset6
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset6
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset6-step.sh
+  Assets-FileAsset7:
+    name: Publish Assets Assets-FileAsset7
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset7
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset7-step.sh
+  Assets-FileAsset8:
+    name: Publish Assets Assets-FileAsset8
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset8
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset8-step.sh
+  Assets-FileAsset9:
+    name: Publish Assets Assets-FileAsset9
+    needs:
+      - Build-Build
+    permissions:
+      contents: read
+      id-token: write
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    outputs:
+      asset-hash: ${{ steps.Publish.outputs.asset-hash }}
+    steps:
+      - name: Download cdk.out
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk.out
+          path: cdk.out
+      - name: Install
+        run: npm install --no-save cdk-assets
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - id: Publish
+        name: Publish Assets-FileAsset9
+        run: /bin/bash ./cdk.out/publish-Assets-FileAsset9-step.sh
+  Dev-REPLACE-MEApiStack-Deploy:
+    name: Deploy DevREPLACEMEApiStack05561631
+    permissions:
+      contents: read
+      id-token: write
+    environment: Dev
+    needs:
+      - Build-Build
+      - Assets-FileAsset1
+      - Assets-FileAsset2
+      - Assets-FileAsset3
+      - Assets-FileAsset4
+      - Assets-FileAsset5
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::719674059873:role/cdk-cosmos2-deploy-role-719674059873-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Dev-REPLACE-MEApiStack
+          template: https://cdk-cosmos2-assets-719674059873-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset1.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::719674059873:role/cdk-cosmos2-cfn-exec-role-719674059873-ap-southeast-2
+  Dev-REPLACE-MEStaticStack-Deploy:
+    name: Deploy DevREPLACEMEStaticStack546053A7
+    permissions:
+      contents: read
+      id-token: write
+    environment: Dev
+    needs:
+      - Build-Build
+      - Assets-FileAsset6
+      - Assets-FileAsset7
+      - Assets-FileAsset8
+      - Assets-FileAsset9
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::553067551417:role/cdk-cosmos2-deploy-role-553067551417-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Dev-REPLACE-MEStaticStack
+          template: https://cdk-cosmos2-assets-553067551417-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset6.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::553067551417:role/cdk-cosmos2-cfn-exec-role-553067551417-ap-southeast-2
+  Tst-REPLACE-MEApiStack-Deploy:
+    name: Deploy TstREPLACEMEApiStack8334DD07
+    permissions:
+      contents: read
+      id-token: write
+    environment: Tst
+    needs:
+      - Build-Build
+      - Assets-FileAsset10
+      - Assets-FileAsset2
+      - Assets-FileAsset3
+      - Assets-FileAsset4
+      - Assets-FileAsset5
+      - Dev-REPLACE-MEApiStack-Deploy
+      - Dev-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::719674059873:role/cdk-cosmos2-deploy-role-719674059873-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Tst-REPLACE-MEApiStack
+          template: https://cdk-cosmos2-assets-719674059873-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset10.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::719674059873:role/cdk-cosmos2-cfn-exec-role-719674059873-ap-southeast-2
+  Tst-REPLACE-MEStaticStack-Deploy:
+    name: Deploy TstREPLACEMEStaticStack08F3191E
+    permissions:
+      contents: read
+      id-token: write
+    environment: Tst
+    needs:
+      - Build-Build
+      - Assets-FileAsset11
+      - Assets-FileAsset7
+      - Assets-FileAsset8
+      - Assets-FileAsset12
+      - Dev-REPLACE-MEApiStack-Deploy
+      - Dev-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::553067551417:role/cdk-cosmos2-deploy-role-553067551417-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Tst-REPLACE-MEStaticStack
+          template: https://cdk-cosmos2-assets-553067551417-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset11.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::553067551417:role/cdk-cosmos2-cfn-exec-role-553067551417-ap-southeast-2
+  Stub-REPLACE-MEApiStack-Deploy:
+    name: Deploy StubREPLACEMEApiStack2E0154F0
+    permissions:
+      contents: read
+      id-token: write
+    environment: Stub
+    needs:
+      - Build-Build
+      - Assets-FileAsset13
+      - Assets-FileAsset2
+      - Assets-FileAsset3
+      - Assets-FileAsset4
+      - Assets-FileAsset5
+      - Tst-REPLACE-MEApiStack-Deploy
+      - Tst-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::719674059873:role/cdk-cosmos2-deploy-role-719674059873-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Stub-REPLACE-MEApiStack
+          template: https://cdk-cosmos2-assets-719674059873-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset13.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::719674059873:role/cdk-cosmos2-cfn-exec-role-719674059873-ap-southeast-2
+  Stub-REPLACE-MEStaticStack-Deploy:
+    name: Deploy StubREPLACEMEStaticStackF094D082
+    permissions:
+      contents: read
+      id-token: write
+    environment: Stub
+    needs:
+      - Build-Build
+      - Assets-FileAsset14
+      - Assets-FileAsset7
+      - Assets-FileAsset8
+      - Assets-FileAsset15
+      - Tst-REPLACE-MEApiStack-Deploy
+      - Tst-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::553067551417:role/cdk-cosmos2-deploy-role-553067551417-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Stub-REPLACE-MEStaticStack
+          template: https://cdk-cosmos2-assets-553067551417-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset14.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::553067551417:role/cdk-cosmos2-cfn-exec-role-553067551417-ap-southeast-2
+  Sit-REPLACE-MEApiStack-Deploy:
+    name: Deploy SitREPLACEMEApiStackD249ABDB
+    permissions:
+      contents: read
+      id-token: write
+    environment: Sit
+    needs:
+      - Build-Build
+      - Assets-FileAsset16
+      - Assets-FileAsset2
+      - Assets-FileAsset3
+      - Assets-FileAsset4
+      - Assets-FileAsset5
+      - Stub-REPLACE-MEApiStack-Deploy
+      - Stub-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::719674059873:role/cdk-cosmos2-deploy-role-719674059873-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Sit-REPLACE-MEApiStack
+          template: https://cdk-cosmos2-assets-719674059873-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset16.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::719674059873:role/cdk-cosmos2-cfn-exec-role-719674059873-ap-southeast-2
+  Sit-REPLACE-MEStaticStack-Deploy:
+    name: Deploy SitREPLACEMEStaticStackAE01F6B9
+    permissions:
+      contents: read
+      id-token: write
+    environment: Sit
+    needs:
+      - Build-Build
+      - Assets-FileAsset17
+      - Assets-FileAsset7
+      - Assets-FileAsset8
+      - Assets-FileAsset18
+      - Stub-REPLACE-MEApiStack-Deploy
+      - Stub-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::553067551417:role/cdk-cosmos2-deploy-role-553067551417-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Sit-REPLACE-MEStaticStack
+          template: https://cdk-cosmos2-assets-553067551417-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset17.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::553067551417:role/cdk-cosmos2-cfn-exec-role-553067551417-ap-southeast-2
+  Perf-REPLACE-MEApiStack-Deploy:
+    name: Deploy PerfREPLACEMEApiStackB4091791
+    permissions:
+      contents: read
+      id-token: write
+    environment: Perf
+    needs:
+      - Build-Build
+      - Assets-FileAsset19
+      - Assets-FileAsset2
+      - Assets-FileAsset3
+      - Assets-FileAsset4
+      - Assets-FileAsset5
+      - Sit-REPLACE-MEApiStack-Deploy
+      - Sit-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::719674059873:role/cdk-cosmos2-deploy-role-719674059873-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Perf-REPLACE-MEApiStack
+          template: https://cdk-cosmos2-assets-719674059873-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset19.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::719674059873:role/cdk-cosmos2-cfn-exec-role-719674059873-ap-southeast-2
+  Perf-REPLACE-MEStaticStack-Deploy:
+    name: Deploy PerfREPLACEMEStaticStackB8D71063
+    permissions:
+      contents: read
+      id-token: write
+    environment: Perf
+    needs:
+      - Build-Build
+      - Assets-FileAsset20
+      - Assets-FileAsset7
+      - Assets-FileAsset8
+      - Assets-FileAsset21
+      - Sit-REPLACE-MEApiStack-Deploy
+      - Sit-REPLACE-MEStaticStack-Deploy
+    runs-on:
+      - self-hosted
+      - vm:m5.large
+    steps:
+      - name: Authenticate Via OIDC Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::592166867077:role/REPLACE-MEOidcCdkDeployRole
+      - name: Assume CDK Deploy Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-2
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::553067551417:role/cdk-cosmos2-deploy-role-553067551417-ap-southeast-2
+          role-external-id: Pipeline
+      - id: Deploy
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: Perf-REPLACE-MEStaticStack
+          template: https://cdk-cosmos2-assets-553067551417-ap-southeast-2.s3.ap-southeast-2.amazonaws.com/${{
+            needs.Assets-FileAsset20.outputs.asset-hash }}.json
+          no-fail-on-empty-changeset: "1"
+          role-arn: arn:aws:iam::553067551417:role/cdk-cosmos2-cfn-exec-role-553067551417-ap-southeast-2
